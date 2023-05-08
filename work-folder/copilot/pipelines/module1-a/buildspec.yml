@@ -67,9 +67,6 @@ phases:
           done;
         done;
       - ls -lah ./infrastructure
-      - echo "CODEBUILD_SRC_DIR: $CODEBUILD_SRC_DIR"
-      - new_src_dir="$CODEBUILD_SRC_DIR/work-folder"
-      - export CODEBUILD_SRC_DIR=$new_src_dir && echo "New_SRC_DIR: $CODEBUILD_SRC_DIR"
 artifacts:
   files:
     - "infrastructure/*"
