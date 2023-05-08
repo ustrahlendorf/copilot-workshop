@@ -66,6 +66,7 @@ phases:
           fi
           done;
         done;
+      - echo $PWD
       - ls -lah ./infrastructure
       - echo $CODEBUILD_SRC_DIR
 artifacts:
