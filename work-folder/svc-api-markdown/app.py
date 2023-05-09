@@ -37,9 +37,7 @@ dynamodb = boto3.resource('dynamodb')
 
 def save_data(markdown, html):
     try:
-        table = dynamodb.Table(
-            os.getenv("MARKDOWNTABLE_NAME")
-            )
+        table = dynamodb.Table(os.getenv("MARKDOWNTABLE_NAME"))
         id = str(uuid.uuid4())
         table.update_item(
             Key={'ID': id},
