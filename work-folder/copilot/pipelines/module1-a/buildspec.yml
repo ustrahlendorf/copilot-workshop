@@ -7,8 +7,8 @@ phases:
       ruby: 3.1
       nodejs: 16
     commands:
-      - echo "cd into $CODEBUILD_SRC_DIR/work-folder"
-      - cd $CODEBUILD_SRC_DIR/work-folder
+      - echo "cd into $CODEBUILD_SRC_DIR"
+      - cd $CODEBUILD_SRC_DIR
       # Download the copilot linux binary.
       - wget -q https://ecs-cli-v2-release.s3.amazonaws.com/copilot-linux-v1.27.0
       - mv ./copilot-linux-v1.27.0 ./copilot-linux
@@ -21,7 +21,7 @@ phases:
     commands:
       - ls -l
       - export COLOR="false"
-      - pipeline=$(cat $CODEBUILD_SRC_DIR/work-folder/copilot/pipelines/module1-a/manifest.yml | ruby -ryaml -rjson -e 'puts JSON.pretty_generate(YAML.load(ARGF))')
+      - pipeline=$(cat $CODEBUILD_SRC_DIR/copilot/pipelines/module1-a/manifest.yml | ruby -ryaml -rjson -e 'puts JSON.pretty_generate(YAML.load(ARGF))')
       - pl_envs=$(echo $pipeline | jq -r '.stages[].name')
       # Find all the local services in the workspace.
       - svc_ls_result=$(./copilot-linux svc ls --local --json)
@@ -70,4 +70,4 @@ phases:
       - echo $CODEBUILD_SRC_DIR
 artifacts:
   files:
-    - "work-folder/infrastructure/*"
+    - "infrastructure/*"

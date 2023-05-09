@@ -20,10 +20,17 @@ source:
     # Optional: specify the name of an existing CodeStar Connections connection.
     # connection_name: a-connection
 
+build:
+  buildspec: work-folder/copilot/pipelines/module1-a/buildspec.yml
+
 # This section defines the order of the environments your pipeline will deploy to.
 stages:
   - # The name of the environment.
     name: staging
+    deployments:
+     deploy-staging:
+      template_path: workload/infrastructure/svc-api-markdown-staging.stack.yml
+      template_config: workload/infrastructure/svc-api-markdown-staging.params.json 
     # Optional: flag for manual approval action before deployment.
     # requires_approval: true
     # Optional: use test commands to validate this stage of your build.
