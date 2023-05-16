@@ -13,7 +13,8 @@ logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 app.secret_key = "module6-observability"
-dynamodb = boto3.resource('dynamodb', region_name="ap-southeast-1")
+#dynamodb = boto3.resource('dynamodb', region_name="ap-southeast-1")
+dynamodb = boto3.resource('dynamodb')
 
 ENV_NAME = os.getenv("COPILOT_ENVIRONMENT_NAME")
 LOGGING_LEVEL = logging.INFO if ENV_NAME == "production" else logging.INFO
@@ -22,12 +23,12 @@ logging.basicConfig(level=LOGGING_LEVEL)
 
 def save_data(markdown, html):
     try:
-        logging.info('Started a saving to DB')
+        logging.info('Started a saving to DB table obs')
         table = dynamodb.Table(
-            os.getenv("MARKDOWNTABLE_NAME"))
-        id = uuid.uuid4()
+            os.getenv("MARKDOWNOBSTABLE_NAME"))
+        id = str(uuid.uuid4())
         table.update_item(
-            Key={'ID': int(id)},
+            Key={'ID': id},
             UpdateExpression="set message_markdown=:markdown, message_html=:html, request_date=:sts",
             ExpressionAttributeValues={
                 ':markdown': markdown,
@@ -60,6 +61,7 @@ def to_markdown():
             input_markdown = request.json['text']
             html = markdown.markdown(input_markdown)
             db_status = save_data(input_markdown, html)
+#            db_status = True
             if db_status:
                 response_data = {"markdown": input_markdown, "html": html}
                 response_status = 200
